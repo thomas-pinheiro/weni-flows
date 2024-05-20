@@ -1,0 +1,155 @@
+{
+  "version": "13",
+  "site": "https://flows.weni.ai",
+  "flows": [
+    {
+      "uuid": "a2784dbf-5b0e-4e8a-beec-e583176c0b49",
+      "name": "Emoji identification",
+      "spec_version": "13.1.0",
+      "language": "por",
+      "type": "messaging",
+      "revision": 97,
+      "expire_after_minutes": 10080,
+      "localization": {
+        "base": {
+          "1a3543d4-73a6-4921-9f5e-ecb6892ed270": {
+            "category": [
+              ""
+            ]
+          },
+          "3223cfc3-b75e-4c3a-a79c-0f85f65dd78c": {
+            "name": [
+              "Emoji"
+            ]
+          },
+          "721e502e-ad4e-481d-b772-8c37cd7d2835": {
+            "category": [
+              ""
+            ]
+          },
+          "7852db17-d71b-4c9a-86e7-d634b5353adf": {
+            "arguments": [
+              "([\\p{So}])"
+            ]
+          },
+          "f6015847-59b2-4f15-8e19-0bf469b20dee": {
+            "name": [
+              "Other"
+            ]
+          }
+        }
+      },
+      "nodes": [
+        {
+          "uuid": "128bc541-6989-45d3-9246-2e133c83825d",
+          "actions": [
+            {
+              "type": "set_run_result",
+              "uuid": "721e502e-ad4e-481d-b772-8c37cd7d2835",
+              "name": "text",
+              "value": "@input.text"
+            }
+          ],
+          "exits": [
+            {
+              "uuid": "dc89e5e5-4a8e-49ee-a2cd-752dcc856ff4",
+              "destination_uuid": "e2313be6-9b62-4e93-a4a0-d1545dc112f9"
+            }
+          ]
+        },
+        {
+          "uuid": "e2313be6-9b62-4e93-a4a0-d1545dc112f9",
+          "router": {
+            "type": "switch",
+            "categories": [
+              {
+                "uuid": "3223cfc3-b75e-4c3a-a79c-0f85f65dd78c",
+                "name": "Emoji",
+                "exit_uuid": "7fa6da7c-5f0a-4fb1-b12e-f515718d1178"
+              },
+              {
+                "uuid": "f6015847-59b2-4f15-8e19-0bf469b20dee",
+                "name": "Other",
+                "exit_uuid": "2411b05d-9abd-4b56-a225-0e2b19a77ec0"
+              }
+            ],
+            "operand": "@results.text",
+            "cases": [
+              {
+                "uuid": "7852db17-d71b-4c9a-86e7-d634b5353adf",
+                "type": "has_pattern",
+                "arguments": [
+                  "([\\p{So}])"
+                ],
+                "category_uuid": "3223cfc3-b75e-4c3a-a79c-0f85f65dd78c"
+              }
+            ],
+            "default_category_uuid": "f6015847-59b2-4f15-8e19-0bf469b20dee"
+          },
+          "exits": [
+            {
+              "uuid": "7fa6da7c-5f0a-4fb1-b12e-f515718d1178",
+              "destination_uuid": "2b540b81-7b37-4c57-b6f8-c191cebced30"
+            },
+            {
+              "uuid": "2411b05d-9abd-4b56-a225-0e2b19a77ec0"
+            }
+          ]
+        },
+        {
+          "uuid": "2b540b81-7b37-4c57-b6f8-c191cebced30",
+          "actions": [
+            {
+              "type": "set_run_result",
+              "uuid": "1a3543d4-73a6-4921-9f5e-ecb6892ed270",
+              "name": "text",
+              "value": "@(replace(results.text, regex_match(results.text, \"([\\p{So}])\"), \"\"))"
+            }
+          ],
+          "exits": [
+            {
+              "uuid": "8b32c06c-eea6-4ba2-a4e1-e00f738bffc0",
+              "destination_uuid": "e2313be6-9b62-4e93-a4a0-d1545dc112f9"
+            }
+          ]
+        }
+      ],
+      "_ui": {
+        "nodes": {
+          "128bc541-6989-45d3-9246-2e133c83825d": {
+            "position": {
+              "left": 897,
+              "top": -169
+            },
+            "type": "execute_actions"
+          },
+          "e2313be6-9b62-4e93-a4a0-d1545dc112f9": {
+            "type": "split_by_expression",
+            "position": {
+              "left": 899,
+              "top": -33
+            },
+            "config": {
+              "cases": {}
+            }
+          },
+          "2b540b81-7b37-4c57-b6f8-c191cebced30": {
+            "position": {
+              "left": 898,
+              "top": 120
+            },
+            "type": "execute_actions"
+          }
+        }
+      },
+      "integrations": {
+        "classifiers": [],
+        "ticketers": []
+      }
+    }
+  ],
+  "campaigns": [],
+  "triggers": [],
+  "fields": [],
+  "groups": []
+}
